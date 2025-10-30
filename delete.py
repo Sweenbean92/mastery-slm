@@ -1,7 +1,18 @@
 import chromadb
+import shutil
 
-# Initialize ChromaDB client
-client = chromadb.Client()
+def delete_chroma_database(db_path="./chroma_db"):
+    try:
+        # First, try to close any existing client connections
+        #client = chromadb.PersistentClient(path=db_path)
+        #client.reset()
+        
+        # Delete the database directory
+        shutil.rmtree(db_path)
+        print(f"Successfully deleted ChromaDB database at {db_path}")
+    except Exception as e:
+        print(f"Error deleting database: {str(e)}")
 
-collection = client.get_or_create_collection(name="documents")
-collection.delete(ids="all")  # Delete all documents in the collection
+if __name__ == "__main__":
+    # You can specify a different path if needed
+    delete_chroma_database()
