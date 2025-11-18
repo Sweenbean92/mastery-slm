@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, Response
 from rag_phi3 import RAGChain
 import json
 import random
+import os
 
 app = Flask(__name__)
 
@@ -254,5 +255,7 @@ Provide a brief explanation (2-3 sentences) evaluating the answer. If the answer
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # Get port from environment variable (Railway provides this)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)
 

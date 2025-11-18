@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.git/
+.gitignore
+*.bat
+webcrawler.py
+chroma_db.py
+delete.py
+README_CRAWLER.md
+vercel.json
+.vercelignore
+railway_deployment.md
+
