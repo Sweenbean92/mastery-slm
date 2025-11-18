@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - RAG Interface</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='quiz.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>Course Quiz</h1>
+            <nav>
+                <a href="/" class="nav-link">Chat</a>
+                <a href="/quiz" class="nav-link active">Quiz</a>
+            </nav>
+        </div>
+        
+        <div class="quiz-body">
+            <div class="quiz-sidebar">
+                <h2>Model Selector</h2>
+                <div class="model-menu">
+                    {% for model in models %}
+                    <button class="model-btn {% if model == current_model %}active{% endif %}" 
+                            data-model="{{ model }}" 
+                            onclick="switchModel('{{ model }}')">
+                        {{ model|title }}
+                    </button>
+                    {% endfor %}
+                </div>
+                <div class="current-model">
+                    <p>Current: <span id="current-model-name">{{ current_model|title }}</span></p>
+                </div>
+            </div>
+            
+            <div class="quiz-main">
+            <div class="quiz-controls">
+                <div class="topic-input-group">
+                    <label for="topic-input">Topic (optional):</label>
+                    <input type="text" 
+                           id="topic-input" 
+                           placeholder="Enter a topic to focus the question on..."
+                           autocomplete="off">
+                </div>
+                <button id="generate-btn" class="btn-primary" onclick="generateQuestion()">
+                    Generate Question
+                </button>
+            </div>
+            
+            <div class="quiz-content" id="quiz-content">
+                <div class="welcome-message">
+                    <p>Click "Generate Question" to start a quiz based on your course material.</p>
+                    <p>You can optionally specify a topic to focus the question on.</p>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize current model from server
+        window.initialModel = '{{ current_model }}';
+        let currentModel = '';
+        let currentQuestion = '';
+        let currentContext = '';
+    </script>
+    <script src="{{ url_for('static', filename='quiz.js') }}"></script>
+</body>
+</html>
+

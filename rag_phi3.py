@@ -28,7 +28,7 @@ class RAGChain:
     def rag_ask_streaming(self, query):
         retrieved_docs = self.retrieve(query, top_k=2)
         context = "\n".join(retrieved_docs)
-        prompt = f"Use the following context to answer the question. Context: {context} \n Question: {query} \nAnswer:"
+        prompt = f"Use the following context to answer the question concisely. Context: {context} \n Question: {query} \nAnswer:"
 
         print("Answer (streaming): ", end="", flush=True)
         try:
@@ -37,27 +37,3 @@ class RAGChain:
         except AttributeError:
             print("\nStreaming is not supported by this Ollama implementation.")
         print()
-
-if __name__ == "__main__":
-    # Initialize the RAG chain with default model
-    rag = RAGChain(model_name="phi")
-    
-    # Example of switching between models and asking questions
-    while True:
-        print("\n1. Ask a question")
-        print("2. Switch model")
-        print("3. Exit")
-        choice = input("Enter your choice (1-3): ")
-        
-        if choice == "1":
-            query = input("Enter your question: ")
-            if query.strip():
-                rag.rag_ask_streaming(query)
-        elif choice == "2":
-            new_model = input("Enter model name (e.g., smol, phi, gemma): ")
-            rag.switch_model(new_model)
-        elif choice == "3":
-            print("Goodbye!")
-            break
-        else:
-            print("Invalid choice. Please try again.")

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Chat Interface</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Model Selector</h2>
+            <div class="model-menu">
+                {% for model in models %}
+                <button class="model-btn {% if model == current_model %}active{% endif %}" 
+                        data-model="{{ model }}" 
+                        onclick="switchModel('{{ model }}')">
+                    {{ model|title }}
+                </button>
+                {% endfor %}
+            </div>
+            <div class="current-model">
+                <p>Current: <span id="current-model-name">{{ current_model|title }}</span></p>
+            </div>
+        </div>
+        
+        <div class="chat-container">
+            <div class="chat-header">
+                <h1>RAG Chat Interface</h1>
+                <nav style="display: flex; gap: 15px;">
+                    <a href="/" style="padding: 8px 16px; text-decoration: none; border-radius: 6px; background: #5BC0BE; color: #0B132B; font-weight: 500;">Chat</a>
+                    <a href="/quiz" style="padding: 8px 16px; text-decoration: none; color: #6FFFE9; border-radius: 6px; transition: all 0.3s ease; font-weight: 500;">Quiz</a>
+                </nav>
+            </div>
+            
+            <div class="chat-messages" id="chat-messages">
+                <div class="message system">
+                    <p>Welcome! Select a model and start chatting.</p>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <input type="text" 
+                       id="chat-input" 
+                       placeholder="Type your message here..." 
+                       autocomplete="off">
+                <button id="send-btn" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize current model from server
+        window.initialModel = '{{ current_model }}';
+    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
